@@ -1,0 +1,21 @@
+CREATE TABLE daily_options (
+  underlying varchar(10),
+  underlying_last numeric(18,2),
+  exchange varchar(10),
+  option_symbol varchar(30),
+  option_type varchar(4),
+  expiration_date date,
+  quote_date timestamp,
+  strike numeric(18,2),
+  last numeric(18,2),
+  bid numeric(18,2),
+  ask numeric(18,2),
+  volume integer,
+  open_interest integer,
+  implied_volatility numeric(10, 5),
+  delta numeric(10, 5),
+  gamma numeric(10,5),
+  theta numeric(10, 5),
+  vega numeric(10, 5),
+  alias varchar(10)
+);
