@@ -19,3 +19,25 @@ CREATE TABLE daily_options (
   vega numeric(10, 5),
   alias varchar(10)
 );
+
+CREATE TABLE daily_stocks (
+  symbol varchar(10),
+  date date,
+  open numeric(18,2),
+  high numeric(18,2),
+  low numeric(18,2),
+  close numeric(18,2),
+  volume integer
+);
+
+CREATE TABLE daily_volatility (
+  symbol varchar(10),
+  date date,
+  call_iv numeric(10,5),
+  put_iv numeric(10,5),
+  mean_iv numeric(10,5),
+  call_vol integer,
+  put_vol integer,
+  call_oi integer,
+  put_oi integer
+);

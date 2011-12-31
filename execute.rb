@@ -12,5 +12,8 @@ settings = YAML::load_file "settings.yml"
 #file_grabber.download_options_for(Time.now - 86400)
 #file_grabber.download_missing_options
 
-file_extractor = FileExtractor.new settings
-file_extractor.extract_zipped_options
+#file_extractor = FileExtractor.new settings
+#file_extractor.extract_zipped_options
+
+db = DataSession.new settings
+db.rebuild_database
