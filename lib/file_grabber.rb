@@ -21,9 +21,16 @@ class FileGrabber
     download file
   end
 
-  def download_missing_options()
+  def download_new_options()
     connect
-    missing_files.each{|file| get file}
+    files_to_download = missing_files
+
+    if files_to_download.empty?
+      p "No new files to download"
+    else
+      files_to_download.each{|file| get file}
+    end
+
     close
   end
 
@@ -41,6 +48,7 @@ class FileGrabber
   end
 
   def get(file)
+    p "Downloading #{file}"
     @ftp.getbinaryfile(file, "#{@settings['source_zip_dir']}/#{file}", 1024)
   end
 

@@ -3,6 +3,7 @@ CREATE TABLE daily_options (
   underlying_last numeric(18,2),
   exchange varchar(10),
   option_symbol varchar(30),
+  blank varchar(1),
   option_type varchar(4),
   expiration_date date,
   quote_date timestamp,
