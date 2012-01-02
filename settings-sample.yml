@@ -1,0 +1,12 @@
+num_of_days: 20
+download_latest: yes
+ftp:
+  url: ftp.mysite.com 
+  user: username
+  password: password
+source_zip_dir: /Volumes/Macintosh HD/Options/data
+import_dir: /Volumes/Macintosh HD/Options/import
+results_dir: /Volumes/Macintosh HD/Options/results
+database:
+  name: options_speculation
+  verbose: no
