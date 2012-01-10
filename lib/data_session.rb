@@ -18,11 +18,11 @@ class DataSession
   end
 
   def drop_database
-    execute_command "-c 'DROP DATABASE IF EXISTS #{@db_name};'"
+    execute_command "postgres -c 'DROP DATABASE IF EXISTS #{@db_name};'"
   end
 
   def create_database
-    execute_command "-c 'CREATE DATABASE #{@db_name};'"
+    execute_command "postgres -c 'CREATE DATABASE #{@db_name};'"
   end
 
   def create_tables
