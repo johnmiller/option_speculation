@@ -28,7 +28,8 @@ CREATE TABLE daily_stocks (
   high numeric(18,2),
   low numeric(18,2),
   close numeric(18,2),
-  volume integer
+  volume integer,
+  twenty_day_mov_avg numeric(18,2)
 );
 
 CREATE TABLE daily_volatility (

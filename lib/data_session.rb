@@ -1,6 +1,7 @@
 require 'pg'
 
 class DataSession
+  attr_accessor :db_name
 
   def initialize(settings)
     @settings = settings
@@ -14,10 +15,6 @@ class DataSession
     drop_database
     create_database
     create_tables
-  end
-
-  def import_file(file, table_name)
-      execute_command %{#{@db_name} -c "COPY #{table_name} FROM '#{file}' DELIMITER ',' CSV"}
   end
 
   def drop_database

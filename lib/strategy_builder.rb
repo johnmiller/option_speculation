@@ -13,6 +13,7 @@ class StrategyBuilder
     download_latest
     @db.rebuild_database
     import date
+    calculate_20day_moving_average
   end
 
   def download_latest()
@@ -24,5 +25,9 @@ class StrategyBuilder
   def import(date)
     file_importer = FileImporter.new @settings
     file_importer.import date, @settings["num_of_days"]
+  end
+
+  def calculate_20day_moving_average()
+    @db.execute_command %{#{@db.db_name} -c "UPDATE daily_stocks d SET twenty_day_mov_avg = (select avg(close) from daily_stocks d2 where d2.symbol = d.symbol );"}
   end
 end

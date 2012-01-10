@@ -28,14 +28,26 @@ class FileImporter
   end
 
   def import_pending_files()
-    import_fileset("stockquotes", "daily_stocks")
-    import_fileset("options", "daily_options")
-    import_fileset("optionstats", "daily_volatility")
+    import_stock_files
+    import_option_files
+    import_volatility_files
   end
 
-  def import_fileset(file_prefix, table_name)
-    Dir.glob("#{@import_dir}/#{file_prefix}_*.csv").each do |file|
-      @db.import_file file, table_name
+  def import_stock_files()
+    Dir.glob("#{@import_dir}/stockquotes_*.csv").each do |file|
+      @db.execute_command %{#{@db.db_name} -c "COPY daily_stocks (symbol, date, open, high, low, close, volume) FROM '#{file}' DELIMITER ',' CSV"}
+    end
+  end
+
+  def import_option_files()
+    Dir.glob("#{@import_dir}/options_*.csv").each do |file|
+      @db.execute_command %{#{@db.db_name} -c "COPY daily_options FROM '#{file}' DELIMITER ',' CSV"}
+    end
+  end
+
+  def import_volatility_files()
+    Dir.glob("#{@import_dir}/optionstats_*.csv").each do |file|
+      @db.execute_command %{#{@db.db_name} -c "COPY daily_volatility FROM '#{file}' DELIMITER ',' CSV"}
     end
   end
 
