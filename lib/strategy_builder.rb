@@ -6,14 +6,14 @@ class StrategyBuilder
   end
 
   def find_current_best_picks
-    find_best_picks "20120101"
+    find_best_picks "20120306"
   end
 
   def find_best_picks(date)
-    download_latest
+    #download_latest
     @db.rebuild_database
     import date
-    calculate_20day_moving_average
+    #calculate_20day_moving_average
   end
 
   def download_latest()

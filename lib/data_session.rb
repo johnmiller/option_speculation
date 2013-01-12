@@ -31,6 +31,6 @@ class DataSession
 
   def execute_command(cmd)
     cmd = "-e #{cmd}" if @verbose
-    system "psql #{cmd}"
+    system "psql -U postgres #{cmd}"
   end
 end
