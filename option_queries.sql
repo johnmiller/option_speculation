@@ -27,9 +27,8 @@ order by underlying
 
 
 /********** CALL Credit Spreads ************/
--- inner_call = outer (sell)
--- outer_call = inner (purchase)
--- CALL
+-- inner_call = sell
+-- outer_call = purchase
 with call_options as (
 	select * from daily_options
 	where option_type = 'call'
