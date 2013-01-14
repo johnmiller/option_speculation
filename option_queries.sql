@@ -28,7 +28,7 @@ order by underlying
 
 /********** CALL Credit Spreads ************/
 -- inner_call = sell
--- outer_call = purchase
+-- outer_call = purchases
 with call_options as (
 	select * from daily_options
 	where option_type = 'call'
@@ -74,3 +74,13 @@ where
 	and inner_call.strike > inner_call.underlying_last
 --order by underlying
 --order by ((outer_call.ask - inner_call.bid) / ((inner_call.strike - outer_call.strike) - (outer_call.ask - inner_call.bid))) desc
+
+
+/********** Long PUT ************/
+select underlying_last, expiration_date, strike, last, bid, ask, volume, open_interest, delta 
+from daily_options
+where option_type = 'put'
+and exchange in ('*','G','W','Q','P')
+and underlying = 'NOV'
+--and expiration_date < '2013-03-05'
+order by expiration_date, strike
