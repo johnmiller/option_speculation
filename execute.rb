@@ -10,4 +10,4 @@ settings = YAML::load_file "settings.yml"
 
 strategy_builder = StrategyBuilder.new settings
 #strategy_builder.download_latest
-strategy_builder.find_best_picks "20130111"
+strategy_builder.find_best_picks "20130201"

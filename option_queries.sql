@@ -76,11 +76,20 @@ where
 --order by ((outer_call.ask - inner_call.bid) / ((inner_call.strike - outer_call.strike) - (outer_call.ask - inner_call.bid))) desc
 
 
-/********** Long PUT ************/
+/********** Long put ************/
 select underlying_last, expiration_date, strike, last, bid, ask, volume, open_interest, delta 
 from daily_options
 where option_type = 'put'
 and exchange in ('*','G','W','Q','P')
-and underlying = 'NOV'
---and expiration_date < '2013-03-05'
+and underlying = 'SVXY'
+--and expiration_date = '2013-02-08'
+order by expiration_date, strike
+
+/********** Long call ************/
+select underlying_last, expiration_date, strike, last, bid, ask, volume, open_interest, delta 
+from daily_options
+where option_type = 'call'
+and exchange in ('*','G','W','Q','P')
+and underlying = 'SVXY'
+--and expiration_date = '2013-02-08'
 order by expiration_date, strike
