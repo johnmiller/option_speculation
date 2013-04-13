@@ -12,7 +12,7 @@ class StrategyBuilder
   def find_best_picks(date)
     #download_latest
     @db.rebuild_database
-    import date
+    #import date
     #calculate_20day_moving_average
   end
 

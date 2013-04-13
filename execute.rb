@@ -1,13 +1,73 @@
 require 'yaml'
+require 'optparse'
 
-dir = File.join(File.dirname(__FILE__), '.', 'lib')
+def require_files
+	dir = File.join(File.dirname(__FILE__), '.', 'lib')
 
-Dir[File.expand_path("#{dir}/*.rb")].uniq.each do |file|
-  require file
+	Dir[File.expand_path("#{dir}/*.rb")].uniq.each do |file|
+	  require file
+	end
 end
 
-settings = YAML::load_file "settings.yml"
+def load_settings
+	@settings = YAML::load_file "settings.yml"
+end
 
-strategy_builder = StrategyBuilder.new settings
+def parse_args
+	@args = {}
+
+	opt_parser = OptionParser.new do |opts|
+		opts.banner = "Usage: execute.rb [options]"
+		opts.separator ""
+	    opts.separator "Specific options:"
+
+		opts.on("-r", "--rebuild-database", "Drops and recreates the database") do
+			@args[:rebuild_db] = true 
+		end
+
+		opts.on("-m", "--download-missing", "Downloads options files that exist on server but not locally") do
+			@args[:download_missing] = true;
+		end
+
+		opts.on("-l", "--download-latest", "Downloads newest options files from remote server") do
+			@args[:download_latest] = true;
+		end
+
+		opts.on("-h", "--help", "Display help") do
+			puts opts
+			exit
+		end
+	end
+
+	opt_parser.parse!
+end
+
+def rebuild_db
+	puts "Rebuilding database"
+	db = DataSession.new @settings
+	db.rebuild_database
+end
+
+def download_missing_options
+	puts "Downloading missing files"
+	file_grabber = FileGrabber.new @settings
+    file_grabber.download_new_options
+end
+
+def download_latest_options
+	puts "Downloading latest options file"
+	file_grabber = FileGrabber.new @settings
+    file_grabber.download_latest_options
+end
+
+require_files
+load_settings
+parse_args
+
+rebuild_db if @args[:rebuild_db]
+download_latest_options if @args[:download_latest]
+download_missing_options if @args[:download_missing]
+
+#strategy_builder = StrategyBuilder.new @settings
 #strategy_builder.download_latest
-strategy_builder.find_best_picks "20130201"
+#strategy_builder.find_best_picks "20130412"
