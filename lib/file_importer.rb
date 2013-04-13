@@ -14,6 +14,20 @@ class FileImporter
     cleanup
   end
 
+  def import_dir(dir)
+    
+    zip_files = Dir.glob("#{dir}/options_*.zip")
+
+    zip_files.each do |file|
+      puts "Importing #{file}"
+      cleanup
+      unzip file
+      import_pending_files
+    end
+    
+    cleanup
+  end
+
   def extract_files(date, num_of_days)
     cleanup
     zip_files = Dir.glob("#{@source_dir}/options_*.zip")
@@ -23,36 +37,35 @@ class FileImporter
                    .take(num_of_days)
 
     zip_files.each do |file|
-      system "unzip #{bash_safe_path(file)} -d #{@import_dir}"
+      unzip file
     end
   end
 
   def import_pending_files()
-    import_stock_files
-    import_option_files
-    import_volatility_files
-  end
+    cmd = %{#{@db.db_name} -c "}
 
-  def import_stock_files()
     Dir.glob("#{@import_dir}/stockquotes_*.csv").each do |file|
-      @db.execute_command %{#{@db.db_name} -c "COPY daily_stocks (symbol, date, open, high, low, close, volume) FROM '#{file}' DELIMITER ',' CSV"}
+      cmd += "COPY daily_stocks (symbol, date, open, high, low, close, volume) FROM '#{file}' DELIMITER ',' CSV;"
     end
-  end
-
-  def import_option_files()
+ 
     Dir.glob("#{@import_dir}/options_*.csv").each do |file|
-      @db.execute_command %{#{@db.db_name} -c "COPY daily_options FROM '#{file}' DELIMITER ',' CSV"}
+      cmd += "COPY daily_options FROM '#{file}' DELIMITER ',' CSV;"
     end
-  end
-
-  def import_volatility_files()
+  
     Dir.glob("#{@import_dir}/optionstats_*.csv").each do |file|
-      @db.execute_command %{#{@db.db_name} -c "COPY daily_volatility FROM '#{file}' DELIMITER ',' CSV"}
+      cmd += "COPY daily_volatility FROM '#{file}' DELIMITER ',' CSV;"
     end
+
+    cmd += '"';
+    @db.execute_command cmd
   end
 
   def cleanup()
     system "rm -rf #{@import_dir}"
+  end
+
+  def unzip(file)
+    system "unzip -q #{bash_safe_path(file)} -d #{@import_dir}"
   end
 
   def bash_safe_path(path)

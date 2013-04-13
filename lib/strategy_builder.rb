@@ -27,6 +27,12 @@ class StrategyBuilder
     file_importer.import date, @settings["num_of_days"]
   end
 
+  def process_xxx
+    # download missing
+    # extract new files to import dir
+    # import all staged files
+  end
+
   def calculate_20day_moving_average()
     #TODO: Change back to 20 days instead of 2
     @db.execute_command %{#{@db.db_name} -c "UPDATE daily_stocks d SET twenty_day_mov_avg = (select avg(close) from daily_stocks d2 where d2.symbol = d.symbol limit 20);"}

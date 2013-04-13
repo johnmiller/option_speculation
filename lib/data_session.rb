@@ -9,6 +9,7 @@ class DataSession
     db_settings = @settings["database"]
     @db_name = db_settings["name"]
     @verbose = db_settings["verbose"]
+    @user_name = db_settings["user"]
   end
 
   def rebuild_database
@@ -31,6 +32,6 @@ class DataSession
 
   def execute_command(cmd)
     cmd = "-e #{cmd}" if @verbose
-    system "psql -U postgres #{cmd}"
+    system "psql -q --no-password -U #{@user_name} #{cmd}"
   end
 end

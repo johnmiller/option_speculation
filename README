@@ -1,3 +1,5 @@
+Assumes presence of a .pgpass file or no password needed
+
 Usage: execute.rb [options]
 
 Specific options:

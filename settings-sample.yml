@@ -10,3 +10,4 @@ results_dir: /Volumes/Macintosh HD/Options/results
 database:
   name: options_speculation
   verbose: no
+  user: postgres
