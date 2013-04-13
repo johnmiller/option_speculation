@@ -16,7 +16,7 @@ class FileImporter
 
   def import_dir(dir)
     
-    zip_files = Dir.glob("#{dir}/options_*.zip")
+    zip_files = Dir.glob("#{dir}/**/options_*.zip")
 
     zip_files.each do |file|
       puts "Importing #{file}"
