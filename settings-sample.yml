@@ -1,5 +1,3 @@
-num_of_days: 20
-download_latest: yes
 ftp:
   url: ftp.mysite.com 
   user: username
