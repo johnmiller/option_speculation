@@ -1,0 +1,7 @@
+Usage: execute.rb [options]
+
+Specific options:
+    -r, --rebuild-database           Drops and recreates the database
+    -m, --download-missing           Downloads options files that exist on server but not locally
+    -l, --download-latest            Downloads newest options files from remote server
+    -h, --help                       Display help
