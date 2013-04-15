@@ -15,7 +15,6 @@ class FileImporter
   end
 
   def import_dir(dir)
-    
     zip_files = Dir.glob("#{dir}/**/options_*.zip")
 
     zip_files.each do |file|
@@ -25,6 +24,7 @@ class FileImporter
       import_pending_files
     end
     
+    mark_current
     cleanup
   end
 
@@ -45,19 +45,31 @@ class FileImporter
     cmd = %{#{@db.db_name} -c "}
 
     Dir.glob("#{@import_dir}/stockquotes_*.csv").each do |file|
-      cmd += "COPY daily_stocks (symbol, date, open, high, low, close, volume) FROM '#{file}' DELIMITER ',' CSV;"
+      cmd += "COPY daily_stocks (symbol, date, open, high, low, close, volume) "
+      cmd += "FROM '#{file}' DELIMITER ',' CSV;"
     end
  
     Dir.glob("#{@import_dir}/options_*.csv").each do |file|
-      cmd += "COPY daily_options FROM '#{file}' DELIMITER ',' CSV;"
+      cmd += "COPY daily_options (underlying, underlying_last, exchange, "
+      cmd += "option_symbol, blank, option_type, expiration_date, "
+      cmd += "quote_date, strike, last, bid, ask, volume, open_interest, "
+      cmd += "implied_volatility, delta, gamma, theta, vega, alias) "
+      cmd += "FROM '#{file}' DELIMITER ',' CSV;"
     end
   
     Dir.glob("#{@import_dir}/optionstats_*.csv").each do |file|
-      cmd += "COPY daily_volatility FROM '#{file}' DELIMITER ',' CSV;"
+      cmd += "COPY daily_volatility (symbol, date, call_iv, put_iv, "
+      cmd += "mean_iv, call_vol, put_vol, call_oi, put_oi) "
+      cmd += "FROM '#{file}' DELIMITER ',' CSV;"
     end
 
     cmd += '"';
     @db.execute_command cmd
+  end
+
+  def mark_current()
+    puts "Flagging most recent quotes"
+    @db.execute_command %{#{@db.db_name} -c "SELECT mark_current();"}
   end
 
   def cleanup()
