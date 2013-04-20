@@ -19,7 +19,7 @@ CREATE TABLE daily_options (
   gamma numeric(10,5),
   theta numeric(10, 5),
   vega numeric(10, 5),
-  alias varchar(10),
+  alias varchar(20),
 
   -- Custom Columns
   current boolean default false
